@@ -10,6 +10,11 @@
   color: white;
   font-size: 2rem;
 }
+.MealsError {
+  text-align: center;
+  color: red;
+  font-size: 2rem;
+}
 
 .meals ul {
   list-style: none;
