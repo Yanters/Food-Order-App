@@ -4,6 +4,7 @@ import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
 import classes from "./Cart.module.css";
 import Checkout from "./Checkout";
+import useHttpRequest from "../../hooks/httpRequest";
 
 const Cart = (props) => {
   const [btnIsHighlighted, setBtnIsHighlighted] = useState(false);
@@ -61,16 +62,15 @@ const Cart = (props) => {
 
   // console.log(cartItems.props.children.length);
 
+  const { sendRequest } = useHttpRequest();
+
   const submitOrderHandler = async (userData) => {
     setIsSubmitting(true);
-    const response = await fetch(
-      "https://react-a64f7-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
-      {
-        method: "POST",
-        body: JSON.stringify({ user: userData, orderedItems: cartCtx.items }),
-      }
-    );
-    if (!response.ok) throw new Error("Something went wrong!");
+    sendRequest({
+      url: "https://react-a64f7-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
+      method: "POST",
+      body: JSON.stringify({ user: userData, orderedItems: cartCtx.items }),
+    });
     setIsSubmitting(false);
     setDidSubmit(true);
     cartCtx.clearCart();

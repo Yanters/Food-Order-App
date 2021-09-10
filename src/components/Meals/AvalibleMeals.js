@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useHttpRequest from "../../hooks/httpRequest";
 import Card from "../UI/Card";
 import classes from "./AvalibleMeals.module.css";
 import MealItem from "./MealItem/MealItem";
@@ -8,17 +9,21 @@ const AvalibleMeals = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState();
 
+  const { sendRequest } = useHttpRequest();
+
   useEffect(() => {
     const fetchMeals = async () => {
-      const response = await fetch(
-        "https://react-a64f7-default-rtdb.europe-west1.firebasedatabase.app/meals.json"
-      );
+      // const response = await fetch(
+      //   "https://react-a64f7-default-rtdb.europe-west1.firebasedatabase.app/meals.json"
+      // );
 
-      if (!response.ok) {
-        throw new Error("Not Found.");
-      }
+      // if (!response.ok) {
+      //   throw new Error("Not Found.");
+      // }
 
-      const responseData = await response.json();
+      const responseData = await sendRequest({
+        url: "https://react-a64f7-default-rtdb.europe-west1.firebasedatabase.app/meals.json",
+      });
 
       const loadedMeals = [];
 
@@ -38,7 +43,7 @@ const AvalibleMeals = () => {
       setHttpError(err.message);
       setIsLoading(false);
     });
-  }, []);
+  }, [sendRequest]);
 
   if (isLoading) {
     return <section className={classes.MealsLoading}>Loading...</section>;
